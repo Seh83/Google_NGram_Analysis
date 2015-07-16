@@ -1,0 +1,4 @@
+V1	V2
+word word	10
+word text	5
+text word	3

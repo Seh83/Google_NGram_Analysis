@@ -1,0 +1,222 @@
+Name	Search term performance report												
+Type	Search term												
+Frequency	One time												
+Date range	Custom date range												
+Dates	Whenever to Whenever												
+Account	Device	Network (with search partners)	Search term	Match type	Clicks	Impressions	Cost	Avg. position	Added/Excluded	Converted clicks	Campaign	Ad group	Keyword
+Example - Lots	Computers	Search partners	phrase text word word	broad	1	1	6.21	1	None	0	Campaign 01	Ad Group 01	Keyword 01
+Example - Lots	Tablets with full browsers	Search partners	phrase text word word phrase	broad	1	2	4.04	3.5	None	0	Campaign 01	Ad Group 02	Keyword 02
+Example - Lots	Mobile devices with full browsers	Search partners	phrase text word word other	phrase	0	3	0	8.3	Added	0	Campaign 01	Ad Group 03	Keyword 03
+Example - Lots	Computers	Search partners	phrase text word word	broad (session-based)	1	1	1.56	6	None	0	Campaign 01	Ad Group 04	Keyword 04
+Example - Lots	Tablets with full browsers	Search partners	phrase text word word thing	broad	1	1	2.41	2	None	1	Campaign 01	Ad Group 05	Keyword 05
+Example - Lots	Mobile devices with full browsers	Search partners	phrase text word word one	broad	1	1	0.67	1	None	0	Campaign 01	Ad Group 01	Keyword 06
+Example - Lots	Computers	Search partners	phrase word text phrase	phrase	1	4	1.11	1	Added	0	Campaign 01	Ad Group 02	Keyword 07
+Example - Lots	Tablets with full browsers	Search partners	phrase word text phrase phrase	broad (session-based)	1	1	1.83	1	None	0	Campaign 01	Ad Group 03	Keyword 08
+Example - Lots	Mobile devices with full browsers	Search partners	phrase word text phrase other	broad	1	1	3.94	2	None	0	Campaign 01	Ad Group 04	Keyword 09
+Example - Lots	Computers	Search partners	phrase word text phrase	broad	1	1	2.25	1	None	0	Campaign 01	Ad Group 05	Keyword 10
+Example - Lots	Tablets with full browsers	Search partners	phrase word text phrase thing	phrase	1	1	0.32	8	None	0	Campaign 01	Ad Group 01	Keyword 11
+Example - Lots	Mobile devices with full browsers	Search partners	phrase word text phrase one	broad (session-based)	1	7	1.17	1	None	1	Campaign 01	Ad Group 02	Keyword 12
+Example - Lots	Computers	Google search	phrase text phase word	broad	1	1	1.1	2	None	0	Campaign 01	Ad Group 03	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	phrase text phase word phrase	broad	0	3	0	2	None	0	Campaign 01	Ad Group 04	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	phrase text phase word other	phrase	1	1	1.61	1	None	0	Campaign 01	Ad Group 05	Keyword 15
+Example - Lots	Computers	Google search	phrase text phase word	broad (session-based)	1	1	1.76	1	None	0	Campaign 01	Ad Group 01	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	phrase text phase word thing	broad	0	11	0	4.5	Added	0	Campaign 01	Ad Group 02	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	phrase text phase word one	broad	1	2	3.7	2	None	0	Campaign 01	Ad Group 03	Keyword 18
+Example - Lots	Computers	Google search	phrase word word	phrase	1	1	5.43	1	None	0	Campaign 01	Ad Group 04	Keyword 19
+Example - Lots	Tablets with full browsers	Google search	phrase word word phrase	broad (session-based)	0	2	0	5	Added	0	Campaign 01	Ad Group 05	Keyword 20
+Example - Lots	Mobile devices with full browsers	Google search	phrase word word other	broad	0	2	0	4.5	None	0	Campaign 01	Ad Group 01	Keyword 21
+Example - Lots	Computers	Google search	phrase word word	broad	0	1	0	5	Added	0	Campaign 01	Ad Group 02	Keyword 22
+Example - Lots	Tablets with full browsers	Google search	phrase word word thing	phrase	0	1	0	2	Added	0	Campaign 01	Ad Group 03	Keyword 23
+Example - Lots	Mobile devices with full browsers	Google search	phrase word word one	broad (session-based)	1	1	2.86	3	None	0	Campaign 01	Ad Group 04	Keyword 24
+Example - Lots	Computers	Google search	phrase word text	broad	1	1	1.76	1	None	0	Campaign 01	Ad Group 05	Keyword 25
+Example - Lots	Tablets with full browsers	Google search	phrase word text phrase	broad	1	1	0.36	1	Added	0	Campaign 01	Ad Group 01	Keyword 26
+Example - Lots	Mobile devices with full browsers	Google search	phrase word text other	phrase	1	13	1.11	2.6	Added	0	Campaign 01	Ad Group 02	Keyword 27
+Example - Lots	Computers	Google search	phrase word text	broad (session-based)	1	1	1.64	1	None	0	Campaign 01	Ad Group 03	Keyword 28
+Example - Lots	Tablets with full browsers	Google search	phrase word text thing	broad	0	10	0	1.1	None	0	Campaign 01	Ad Group 04	Keyword 29
+Example - Lots	Mobile devices with full browsers	Google search	phrase word text one	broad	1	1	1.52	4	None	0	Campaign 01	Ad Group 05	Keyword 30
+Example - Lots	Computers	Google search	phrase text word	phrase	1	6	0.6	3.5	None	0	Campaign 01	Ad Group 01	Keyword 31
+Example - Lots	Tablets with full browsers	Google search	phrase text word phrase	broad (session-based)	1	47	1.98	3.1	Added	0	Campaign 01	Ad Group 02	Keyword 32
+Example - Lots	Mobile devices with full browsers	Google search	phrase text word other	broad	1	2	0.66	2	None	0	Campaign 01	Ad Group 03	Keyword 33
+Example - Lots	Computers	Google search	phrase text word	broad	1	2	0.36	3	None	0	Campaign 01	Ad Group 04	Keyword 01
+Example - Lots	Tablets with full browsers	Google search	phrase text word thing	phrase	0	2	0	7.5	Added	0	Campaign 01	Ad Group 05	Keyword 02
+Example - Lots	Mobile devices with full browsers	Google search	phrase text word one	broad (session-based)	0	1	0	2	Added	0	Campaign 01	Ad Group 01	Keyword 03
+Example - Lots	Computers	Google search	text word word	broad	1	1	1.5	2	None	0	Campaign 02	Ad Group 02	Keyword 04
+Example - Lots	Tablets with full browsers	Google search	text word word phrase	broad	0	1	0	1	None	0	Campaign 02	Ad Group 03	Keyword 05
+Example - Lots	Mobile devices with full browsers	Google search	text word word other	phrase	1	6	3.46	2.5	None	0	Campaign 02	Ad Group 04	Keyword 06
+Example - Lots	Computers	Google search	text word word	broad (session-based)	0	54	0	2.8	None	0	Campaign 02	Ad Group 05	Keyword 07
+Example - Lots	Tablets with full browsers	Google search	text word word thing	broad	1	5	1.86	2	None	0	Campaign 02	Ad Group 01	Keyword 08
+Example - Lots	Mobile devices with full browsers	Google search	text word word one	broad	0	1	0	8	None	0	Campaign 02	Ad Group 02	Keyword 09
+Example - Lots	Computers	Google search	word text phrase	phrase	1	3	3.64	2.7	None	0	Campaign 02	Ad Group 03	Keyword 10
+Example - Lots	Tablets with full browsers	Google search	word text phrase phrase	broad (session-based)	1	1	0.57	1	None	0	Campaign 02	Ad Group 04	Keyword 11
+Example - Lots	Mobile devices with full browsers	Google search	word text phrase other	broad	1	2	1.93	3	None	1	Campaign 02	Ad Group 05	Keyword 12
+Example - Lots	Computers	Google search	word text phrase	broad	1	1	2.95	2	None	0	Campaign 02	Ad Group 01	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	word text phrase thing	phrase	0	7	0	3	Added	0	Campaign 02	Ad Group 02	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	word text phrase one	broad (session-based)	1	5	2.23	1	None	0	Campaign 02	Ad Group 03	Keyword 15
+Example - Lots	Computers	Google search	text phase word	broad	1	1	1.92	2	None	0	Campaign 02	Ad Group 04	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	text phase word phrase	broad	0	1	0	6	None	0	Campaign 02	Ad Group 05	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	text phase word other	phrase	1	2	1.67	1.5	None	0	Campaign 02	Ad Group 01	Keyword 18
+Example - Lots	Computers	Google search	text phase word	broad (session-based)	1	1	3.61	1	None	0	Campaign 02	Ad Group 02	Keyword 19
+Example - Lots	Tablets with full browsers	Google search	text phase word thing	broad	0	2	0	9.5	Added	0	Campaign 02	Ad Group 03	Keyword 20
+Example - Lots	Mobile devices with full browsers	Google search	text phase word one	broad	1	1	4.85	2	None	1	Campaign 02	Ad Group 04	Keyword 21
+Example - Lots	Computers	Google search	word word	phrase	1	1	2.85	2	None	0	Campaign 02	Ad Group 05	Keyword 22
+Example - Lots	Tablets with full browsers	Google search	word word phrase	broad (session-based)	0	1	0	3	Added	0	Campaign 02	Ad Group 01	Keyword 23
+Example - Lots	Mobile devices with full browsers	Google search	word word other	broad	1	19	0.91	4.6	Added	0	Campaign 02	Ad Group 02	Keyword 24
+Example - Lots	Computers	Google search	word word	broad	1	2	1.69	2	None	0	Campaign 02	Ad Group 03	Keyword 25
+Example - Lots	Tablets with full browsers	Google search	word word thing	phrase	0	2	0	3	Added	0	Campaign 02	Ad Group 04	Keyword 26
+Example - Lots	Mobile devices with full browsers	Google search	word word one	broad (session-based)	2	11	5.28	2.4	None	0	Campaign 02	Ad Group 05	Keyword 27
+Example - Lots	Computers	Google search	word text	broad	2	2	4.16	1	None	0	Campaign 02	Ad Group 01	Keyword 28
+Example - Lots	Tablets with full browsers	Google search	word text phrase	broad	1	1	1.38	2	Added	0	Campaign 02	Ad Group 02	Keyword 29
+Example - Lots	Mobile devices with full browsers	Google search	word text other	phrase	1	1	1.97	2	None	0	Campaign 02	Ad Group 03	Keyword 30
+Example - Lots	Computers	Google search	word text	broad (session-based)	1	1	4.82	1	None	0	Campaign 02	Ad Group 04	Keyword 31
+Example - Lots	Tablets with full browsers	Google search	word text thing	broad	1	1	0.29	3	None	0	Campaign 02	Ad Group 05	Keyword 32
+Example - Lots	Mobile devices with full browsers	Google search	word text one	broad	1	1	3.41	1	None	0	Campaign 02	Ad Group 01	Keyword 33
+Example - Lots	Computers	Google search	text word	phrase	3	25	7.73	4.2	Added	1	Campaign 02	Ad Group 02	Keyword 01
+Example - Lots	Tablets with full browsers	Google search	text word phrase	broad (session-based)	1	17	0.32	1.8	None	0	Campaign 02	Ad Group 03	Keyword 02
+Example - Lots	Mobile devices with full browsers	Google search	text word other	broad	1	1	1.86	1	None	0	Campaign 02	Ad Group 04	Keyword 03
+Example - Lots	Computers	Google search	text word	broad	1	1	3.31	2	None	0	Campaign 02	Ad Group 05	Keyword 04
+Example - Lots	Tablets with full browsers	Google search	text word thing	phrase	1	1	2.9	1	None	1	Campaign 02	Ad Group 01	Keyword 05
+Example - Lots	Mobile devices with full browsers	Google search	text word one	broad (session-based)	1	1	4.3	3	None	0	Campaign 02	Ad Group 02	Keyword 06
+Example - Lots	Computers	Google search	other text word word	broad	1	7	0.6	1.6	None	0	Campaign 01	Ad Group 03	Keyword 07
+Example - Lots	Tablets with full browsers	Google search	other text word word phrase	broad	1	1	2.72	1	None	0	Campaign 01	Ad Group 04	Keyword 08
+Example - Lots	Mobile devices with full browsers	Google search	other text word word other	phrase	1	1	2.98	2	None	0	Campaign 01	Ad Group 05	Keyword 09
+Example - Lots	Computers	Google search	other text word word	broad (session-based)	1	1	1.46	4	None	0	Campaign 01	Ad Group 01	Keyword 10
+Example - Lots	Tablets with full browsers	Google search	other text word word thing	broad	1	1	5.5	2	None	0	Campaign 01	Ad Group 02	Keyword 11
+Example - Lots	Mobile devices with full browsers	Google search	other text word word one	broad	1	1	1.41	2	None	0	Campaign 01	Ad Group 03	Keyword 12
+Example - Lots	Computers	Google search	other word text phrase	phrase	1	1	4.53	4	None	0	Campaign 01	Ad Group 04	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	other word text phrase phrase	broad (session-based)	1	1	1.58	2	None	0	Campaign 01	Ad Group 05	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	other word text phrase other	broad	0	1	0	6	Added	0	Campaign 01	Ad Group 01	Keyword 15
+Example - Lots	Computers	Google search	other word text phrase	broad	0	1	0	7	Added	0	Campaign 01	Ad Group 02	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	other word text phrase thing	phrase	1	1	3.74	2	None	0	Campaign 01	Ad Group 03	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	other word text phrase one	broad (session-based)	1	2	0.44	3	None	0	Campaign 01	Ad Group 04	Keyword 18
+Example - Lots	Computers	Google search	other text phase word	broad	1	1	2.15	3	None	0	Campaign 01	Ad Group 05	Keyword 19
+Example - Lots	Tablets with full browsers	Google search	other text phase word phrase	broad	0	7	0	6.3	None	0	Campaign 01	Ad Group 01	Keyword 20
+Example - Lots	Mobile devices with full browsers	Google search	other text phase word other	phrase	1	2	0.29	1	None	0	Campaign 01	Ad Group 02	Keyword 21
+Example - Lots	Computers	Google search	other text phase word	broad (session-based)	1	1	1.27	3	None	0	Campaign 01	Ad Group 03	Keyword 22
+Example - Lots	Tablets with full browsers	Google search	other text phase word thing	broad	1	1	5.89	1	Added	0	Campaign 01	Ad Group 04	Keyword 23
+Example - Lots	Mobile devices with full browsers	Google search	other text phase word one	broad	0	193	0	1	Added	0	Campaign 01	Ad Group 05	Keyword 24
+Example - Lots	Computers	Google search	other word word	phrase	0	3	0	3.3	None	0	Campaign 01	Ad Group 01	Keyword 25
+Example - Lots	Tablets with full browsers	Google search	other word word phrase	broad (session-based)	1	1	0.96	1	None	0	Campaign 01	Ad Group 02	Keyword 26
+Example - Lots	Mobile devices with full browsers	Google search	other word word other	broad	1	1	0.88	1	None	0	Campaign 01	Ad Group 03	Keyword 27
+Example - Lots	Computers	Google search	other word word	broad	1	2	0.93	8	None	0	Campaign 01	Ad Group 04	Keyword 28
+Example - Lots	Tablets with full browsers	Google search	other word word thing	phrase	1	1	3.84	1	None	0	Campaign 01	Ad Group 05	Keyword 29
+Example - Lots	Mobile devices with full browsers	Google search	other word word one	broad (session-based)	0	6	0	3.2	Added	0	Campaign 01	Ad Group 01	Keyword 30
+Example - Lots	Computers	Google search	other word text	broad	1	1	4.35	1	None	0	Campaign 01	Ad Group 02	Keyword 31
+Example - Lots	Tablets with full browsers	Google search	other word text phrase	broad	0	1	0	6	Added	0	Campaign 01	Ad Group 03	Keyword 32
+Example - Lots	Mobile devices with full browsers	Google search	other word text other	phrase	0	2	0	2.5	None	0	Campaign 01	Ad Group 04	Keyword 33
+Example - Lots	Computers	Google search	other word text	broad (session-based)	0	2	0	4	None	0	Campaign 01	Ad Group 05	Keyword 01
+Example - Lots	Tablets with full browsers	Google search	other word text thing	broad	1	1	2.54	1	None	0	Campaign 01	Ad Group 01	Keyword 02
+Example - Lots	Mobile devices with full browsers	Google search	other word text one	broad	2	4	3.28	1.3	Added	0	Campaign 01	Ad Group 02	Keyword 03
+Example - Lots	Computers	Google search	other text word	phrase	1	1	1.43	2	None	0	Campaign 01	Ad Group 03	Keyword 04
+Example - Lots	Tablets with full browsers	Google search	other text word phrase	broad (session-based)	1	1	1.86	2	None	0	Campaign 01	Ad Group 04	Keyword 05
+Example - Lots	Mobile devices with full browsers	Google search	other text word other	broad	1	1	2.92	6	None	0	Campaign 01	Ad Group 05	Keyword 06
+Example - Lots	Computers	Google search	other text word	broad	1	1	1.36	6	None	0	Campaign 01	Ad Group 01	Keyword 07
+Example - Lots	Tablets with full browsers	Google search	other text word thing	phrase	1	4	0.23	4.3	Added	0	Campaign 01	Ad Group 02	Keyword 08
+Example - Lots	Mobile devices with full browsers	Google search	other text word one	broad (session-based)	0	4	0	2.5	None	0	Campaign 01	Ad Group 03	Keyword 09
+Example - Lots	Computers	Google search	thing text word word	broad	0	1	0	3	None	0	Campaign 02	Ad Group 04	Keyword 10
+Example - Lots	Tablets with full browsers	Google search	thing text word word phrase	broad	1	1	1.08	3	None	0	Campaign 02	Ad Group 05	Keyword 11
+Example - Lots	Mobile devices with full browsers	Google search	thing text word word other	phrase	1	1	11.16	1	None	0	Campaign 02	Ad Group 01	Keyword 12
+Example - Lots	Computers	Google search	thing text word word	broad (session-based)	0	2	0	6	None	0	Campaign 02	Ad Group 02	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	thing text word word thing	broad	0	2	0	3	None	0	Campaign 02	Ad Group 03	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	thing text word word one	broad	1	1	0.69	2	None	0	Campaign 02	Ad Group 04	Keyword 15
+Example - Lots	Computers	Google search	thing word text phrase	phrase	0	3	0	1.7	None	0	Campaign 02	Ad Group 05	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	thing word text phrase phrase	broad (session-based)	1	1	2.86	3	None	1	Campaign 02	Ad Group 01	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	thing word text phrase other	broad	1	32	1.18	2.6	None	0	Campaign 02	Ad Group 02	Keyword 18
+Example - Lots	Computers	Google search	thing word text phrase	broad	1	1	1.68	1	None	0	Campaign 02	Ad Group 03	Keyword 19
+Example - Lots	Tablets with full browsers	Google search	thing word text phrase thing	phrase	0	2	0	1.5	None	0	Campaign 02	Ad Group 04	Keyword 20
+Example - Lots	Mobile devices with full browsers	Google search	thing word text phrase one	broad (session-based)	1	6	0.36	8.7	None	0	Campaign 02	Ad Group 05	Keyword 21
+Example - Lots	Computers	Google search	thing text phase word	broad	1	1	0.91	3	None	0	Campaign 02	Ad Group 01	Keyword 22
+Example - Lots	Tablets with full browsers	Google search	thing text phase word phrase	broad	3	5	19.21	1.2	None	1	Campaign 02	Ad Group 02	Keyword 23
+Example - Lots	Mobile devices with full browsers	Google search	thing text phase word other	phrase	0	1	0	2	None	0	Campaign 02	Ad Group 03	Keyword 24
+Example - Lots	Computers	Google search	thing text phase word	broad (session-based)	1	9	0.89	1	None	0	Campaign 02	Ad Group 04	Keyword 25
+Example - Lots	Tablets with full browsers	Google search	thing text phase word thing	broad	0	1	0	2	None	0	Campaign 02	Ad Group 05	Keyword 26
+Example - Lots	Mobile devices with full browsers	Google search	thing text phase word one	broad	0	14	0	4.2	Added	0	Campaign 02	Ad Group 01	Keyword 27
+Example - Lots	Computers	Google search	thing word word	phrase	1	1	1.12	1	None	0	Campaign 02	Ad Group 02	Keyword 28
+Example - Lots	Tablets with full browsers	Google search	thing word word phrase	broad (session-based)	1	74	4.25	6	None	0	Campaign 02	Ad Group 03	Keyword 29
+Example - Lots	Mobile devices with full browsers	Google search	thing word word other	broad	1	1	0.32	4	None	0	Campaign 02	Ad Group 04	Keyword 30
+Example - Lots	Computers	Google search	thing word word	broad	1	7	0.65	3.1	None	0	Campaign 02	Ad Group 05	Keyword 31
+Example - Lots	Tablets with full browsers	Google search	thing word word thing	phrase	0	1	0	3	Added	0	Campaign 02	Ad Group 01	Keyword 32
+Example - Lots	Mobile devices with full browsers	Google search	thing word word one	broad (session-based)	2	2	1.4	5	None	0	Campaign 02	Ad Group 02	Keyword 33
+Example - Lots	Computers	Google search	thing word text	broad	1	1	2.4	1	None	0	Campaign 02	Ad Group 03	Keyword 01
+Example - Lots	Tablets with full browsers	Google search	thing word text phrase	broad	0	2	0	3	None	0	Campaign 02	Ad Group 04	Keyword 02
+Example - Lots	Mobile devices with full browsers	Google search	thing word text other	phrase	1	2	1.63	2.5	Added	1	Campaign 02	Ad Group 05	Keyword 03
+Example - Lots	Computers	Google search	thing word text	broad (session-based)	1	3	1.02	3.7	None	0	Campaign 02	Ad Group 01	Keyword 04
+Example - Lots	Tablets with full browsers	Google search	thing word text thing	broad	3	5	6.19	1.8	None	2	Campaign 02	Ad Group 02	Keyword 05
+Example - Lots	Mobile devices with full browsers	Google search	thing word text one	broad	2	2	1.18	2.5	None	0	Campaign 02	Ad Group 03	Keyword 06
+Example - Lots	Computers	Google search	thing text word	phrase	0	2	0	5.5	None	0	Campaign 02	Ad Group 04	Keyword 07
+Example - Lots	Tablets with full browsers	Google search	thing text word phrase	broad (session-based)	1	4	1.27	8.8	Added	0	Campaign 02	Ad Group 05	Keyword 08
+Example - Lots	Mobile devices with full browsers	Google search	thing text word other	broad	0	12	0	4.6	Added	0	Campaign 02	Ad Group 01	Keyword 09
+Example - Lots	Computers	Google search	thing text word	broad	1	6	1.12	3.2	Added	0	Campaign 02	Ad Group 02	Keyword 10
+Example - Lots	Tablets with full browsers	Google search	thing text word thing	phrase	1	1	0.72	1	None	0	Campaign 02	Ad Group 03	Keyword 11
+Example - Lots	Mobile devices with full browsers	Google search	thing text word one	broad (session-based)	1	1	2.02	2	None	0	Campaign 02	Ad Group 04	Keyword 12
+Example - Lots	Computers	Google search	text word word	broad	1	1	7.18	1	None	0	Campaign 01	Ad Group 05	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	text word word phrase	broad	1	1	1.09	2	None	0	Campaign 01	Ad Group 01	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	text word word other	phrase	1	1	2.7	2	None	0	Campaign 01	Ad Group 02	Keyword 15
+Example - Lots	Computers	Google search	text word word	broad (session-based)	1	1	2.87	3	None	0	Campaign 01	Ad Group 03	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	text word word thing	broad	1	1	2.3	1	None	0	Campaign 01	Ad Group 04	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	text word word one	broad	0	2	0	2.5	None	0	Campaign 01	Ad Group 05	Keyword 18
+Example - Lots	Computers	Google search	word text phrase	phrase	0	21	0	4.3	Added	0	Campaign 01	Ad Group 01	Keyword 19
+Example - Lots	Tablets with full browsers	Google search	word text phrase phrase	broad (session-based)	1	1	1.19	3	None	0	Campaign 01	Ad Group 02	Keyword 20
+Example - Lots	Mobile devices with full browsers	Google search	word text phrase other	broad	1	1	1.2	1	None	0	Campaign 01	Ad Group 03	Keyword 21
+Example - Lots	Computers	Google search	word text phrase	broad	0	11	0	1.7	None	0	Campaign 01	Ad Group 04	Keyword 22
+Example - Lots	Tablets with full browsers	Google search	word text phrase thing	phrase	0	1	0	2	None	0	Campaign 01	Ad Group 05	Keyword 23
+Example - Lots	Mobile devices with full browsers	Google search	word text phrase one	broad (session-based)	1	4	0.52	2.8	Added	0	Campaign 01	Ad Group 01	Keyword 24
+Example - Lots	Computers	Google search	text phase word	broad	1	2	1.49	1	None	0	Campaign 01	Ad Group 02	Keyword 25
+Example - Lots	Tablets with full browsers	Google search	text phase word phrase	broad	0	2	0	4	None	0	Campaign 01	Ad Group 03	Keyword 26
+Example - Lots	Mobile devices with full browsers	Google search	text phase word other	phrase	1	1	2.88	2	None	0	Campaign 01	Ad Group 04	Keyword 27
+Example - Lots	Computers	Google search	text phase word	broad (session-based)	1	2	4.4	3	Added	0	Campaign 01	Ad Group 05	Keyword 28
+Example - Lots	Tablets with full browsers	Google search	text phase word thing	broad	1	3	0.29	2	None	0	Campaign 01	Ad Group 01	Keyword 29
+Example - Lots	Mobile devices with full browsers	Google search	text phase word one	broad	0	1	0	4	None	0	Campaign 01	Ad Group 02	Keyword 30
+Example - Lots	Computers	Google search	word word	phrase	1	4	2.77	1.8	None	0	Campaign 01	Ad Group 03	Keyword 31
+Example - Lots	Tablets with full browsers	Google search	word word phrase	broad (session-based)	1	3	2.15	3	None	0	Campaign 01	Ad Group 04	Keyword 32
+Example - Lots	Mobile devices with full browsers	Google search	word word other	broad	1	1	3.57	1	None	0	Campaign 01	Ad Group 05	Keyword 33
+Example - Lots	Computers	Google search	word word	broad	0	9	0	2.8	None	0	Campaign 01	Ad Group 01	Keyword 01
+Example - Lots	Tablets with full browsers	Google search	word word thing	phrase	1	1	11.33	1	None	0	Campaign 01	Ad Group 02	Keyword 02
+Example - Lots	Mobile devices with full browsers	Google search	word word one	broad (session-based)	1	1	1.43	2	None	0	Campaign 01	Ad Group 03	Keyword 03
+Example - Lots	Computers	Google search	word text	broad	1	15	0.33	3.1	None	0	Campaign 01	Ad Group 04	Keyword 04
+Example - Lots	Tablets with full browsers	Google search	word text phrase	broad	1	1	1.14	4	None	0	Campaign 01	Ad Group 05	Keyword 05
+Example - Lots	Mobile devices with full browsers	Google search	word text other	phrase	2	2	1.84	1.5	None	0	Campaign 01	Ad Group 01	Keyword 06
+Example - Lots	Computers	Google search	word text	broad (session-based)	1	1	1.14	1	None	0	Campaign 01	Ad Group 02	Keyword 07
+Example - Lots	Tablets with full browsers	Google search	word text thing	broad	1	1	3.91	1	None	0	Campaign 01	Ad Group 03	Keyword 08
+Example - Lots	Mobile devices with full browsers	Google search	word text one	broad	1	1	0.98	3	None	0	Campaign 01	Ad Group 04	Keyword 09
+Example - Lots	Computers	Google search	text word	phrase	0	13	0	3.5	None	0	Campaign 01	Ad Group 05	Keyword 10
+Example - Lots	Tablets with full browsers	Google search	text word phrase	broad (session-based)	1	2	0.36	3	None	0	Campaign 01	Ad Group 01	Keyword 11
+Example - Lots	Mobile devices with full browsers	Google search	text word other	broad	0	1	0	4	Added	0	Campaign 01	Ad Group 02	Keyword 12
+Example - Lots	Computers	Google search	text word	broad	1	2	3.02	3	None	0	Campaign 01	Ad Group 03	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	text word thing	phrase	1	1	3.69	1	None	0	Campaign 01	Ad Group 04	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	text word one	broad (session-based)	1	1	0.38	2	None	0	Campaign 01	Ad Group 05	Keyword 15
+Example - Lots	Computers	Google search	one text word word	broad	1	1	2.72	2	None	0	Campaign 02	Ad Group 01	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	one text word word phrase	broad	2	9	8.71	2	None	0	Campaign 02	Ad Group 02	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	one text word word other	phrase	1	1	0.06	7	None	0	Campaign 02	Ad Group 03	Keyword 18
+Example - Lots	Computers	Google search	one text word word	broad (session-based)	1	1	1.67	6	None	0	Campaign 02	Ad Group 04	Keyword 19
+Example - Lots	Tablets with full browsers	Google search	one text word word thing	broad	3	7	1.66	2.6	None	0	Campaign 02	Ad Group 05	Keyword 20
+Example - Lots	Mobile devices with full browsers	Google search	one text word word one	broad	1	1	1.78	3	None	0	Campaign 02	Ad Group 01	Keyword 21
+Example - Lots	Computers	Google search	one word text phrase	phrase	1	1	1.32	2	None	0	Campaign 02	Ad Group 02	Keyword 22
+Example - Lots	Tablets with full browsers	Google search	one word text phrase phrase	broad (session-based)	0	7	0	3.3	None	0	Campaign 02	Ad Group 03	Keyword 23
+Example - Lots	Mobile devices with full browsers	Google search	one word text phrase other	broad	1	1	3.4	5	None	0	Campaign 02	Ad Group 04	Keyword 24
+Example - Lots	Computers	Google search	one word text phrase	broad	0	1	0	9	None	0	Campaign 02	Ad Group 05	Keyword 25
+Example - Lots	Tablets with full browsers	Google search	one word text phrase thing	phrase	1	1	2.34	1	None	0	Campaign 02	Ad Group 01	Keyword 26
+Example - Lots	Mobile devices with full browsers	Google search	one word text phrase one	broad (session-based)	1	1	3.48	1	None	0	Campaign 02	Ad Group 02	Keyword 27
+Example - Lots	Computers	Google search	one text phase word	broad	1	2	2.12	3	None	0	Campaign 02	Ad Group 03	Keyword 28
+Example - Lots	Tablets with full browsers	Google search	one text phase word phrase	broad	1	1	0.67	1	None	0	Campaign 02	Ad Group 04	Keyword 29
+Example - Lots	Mobile devices with full browsers	Google search	one text phase word other	phrase	1	1	4.72	1	None	0	Campaign 02	Ad Group 05	Keyword 30
+Example - Lots	Computers	Google search	one text phase word	broad (session-based)	1	2	1.89	2	None	0	Campaign 02	Ad Group 01	Keyword 31
+Example - Lots	Tablets with full browsers	Google search	one text phase word thing	broad	1	1	1.3	1	None	0	Campaign 02	Ad Group 02	Keyword 32
+Example - Lots	Mobile devices with full browsers	Google search	one text phase word one	broad	1	1	3.03	1	None	0	Campaign 02	Ad Group 03	Keyword 33
+Example - Lots	Computers	Google search	one word word	phrase	1	1	2.52	2	None	0	Campaign 02	Ad Group 04	Keyword 01
+Example - Lots	Tablets with full browsers	Google search	one word word phrase	broad (session-based)	1	7	1.66	1	None	0	Campaign 02	Ad Group 05	Keyword 02
+Example - Lots	Mobile devices with full browsers	Google search	one word word other	broad	2	1	8.94	1	None	0	Campaign 02	Ad Group 01	Keyword 03
+Example - Lots	Computers	Google search	one word word	broad	1	1	1.62	3	None	0	Campaign 02	Ad Group 02	Keyword 04
+Example - Lots	Tablets with full browsers	Google search	one word word thing	phrase	0	11	0	4.1	Added	0	Campaign 02	Ad Group 03	Keyword 05
+Example - Lots	Mobile devices with full browsers	Google search	one word word one	broad (session-based)	0	2	0	3	Added	0	Campaign 02	Ad Group 04	Keyword 06
+Example - Lots	Computers	Google search	one word text	broad	1	1	1.73	1	None	0	Campaign 02	Ad Group 05	Keyword 07
+Example - Lots	Tablets with full browsers	Google search	one word text phrase	broad	1	1	2.27	2	None	0	Campaign 02	Ad Group 01	Keyword 08
+Example - Lots	Mobile devices with full browsers	Google search	one word text other	phrase	0	4	0	1	None	0	Campaign 02	Ad Group 02	Keyword 09
+Example - Lots	Computers	Google search	one word text	broad (session-based)	1	1	0.86	4	None	0	Campaign 02	Ad Group 03	Keyword 10
+Example - Lots	Tablets with full browsers	Google search	one word text thing	broad	0	9	0	4.9	Added	0	Campaign 02	Ad Group 04	Keyword 11
+Example - Lots	Mobile devices with full browsers	Google search	one word text one	broad	2	95	3.53	8.2	Added	0	Campaign 02	Ad Group 05	Keyword 12
+Example - Lots	Computers	Google search	one text word	phrase	1	69	0.45	4.2	None	0	Campaign 02	Ad Group 01	Keyword 13
+Example - Lots	Tablets with full browsers	Google search	one text word phrase	broad (session-based)	1	1	0.57	2	Added	0	Campaign 02	Ad Group 02	Keyword 14
+Example - Lots	Mobile devices with full browsers	Google search	one text word other	broad	0	3	0	2	None	0	Campaign 02	Ad Group 03	Keyword 15
+Example - Lots	Computers	Google search	one text word	broad	0	2	0	6.5	None	0	Campaign 02	Ad Group 04	Keyword 16
+Example - Lots	Tablets with full browsers	Google search	one text word thing	phrase	1	1	2.52	2	None	0	Campaign 02	Ad Group 05	Keyword 17
+Example - Lots	Mobile devices with full browsers	Google search	one text word one	broad (session-based)	1	1	4.77	3	None	0	Campaign 02	Ad Group 01	Keyword 18

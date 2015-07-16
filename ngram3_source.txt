@@ -1,0 +1,4 @@
+V1	V2
+text word word	5
+word text phrase	2
+text phase word	1
