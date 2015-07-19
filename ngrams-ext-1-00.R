@@ -92,8 +92,11 @@ labelNgrams.work_file2$cpc <- labelNgrams.work_file2$Cost/labelNgrams.work_file2
 labelNgrams.work_file2$cpa <- labelNgrams.work_file2$Cost/labelNgrams.work_file2$Converted.clicks
 labelNgrams.work_file2$cvr <- labelNgrams.work_file2$Converted.clicks/labelNgrams.work_file2$Clicks
 
+## Sort out inf values for processing.
+labelNgrams.work_file2$cpa[is.infinite(labelNgrams.work_file2$cpa)] <- NA 
+
 ## Data Export
-file_output(paste0("//ngrams_",dateString, "2word.csv"), labelNgrams.work_file2)
+file_output(paste0("//ngrams_",dateString, "_2word.csv"), labelNgrams.work_file2)
 
 labelNgrams.work_file3 <- data.frame()
 
@@ -112,5 +115,21 @@ labelNgrams.work_file3$cpc <- labelNgrams.work_file3$Cost/labelNgrams.work_file3
 labelNgrams.work_file3$cpa <- labelNgrams.work_file3$Cost/labelNgrams.work_file3$Converted.clicks
 labelNgrams.work_file3$cvr <- labelNgrams.work_file3$Converted.clicks/labelNgrams.work_file3$Clicks
 
+## Sort out inf values for processing.
+labelNgrams.work_file3$cpa[is.infinite(labelNgrams.work_file3$cpa)] <- NA 
+
 ## Data Export
-file_output(paste0("//ngrams_",dateString, "3word.csv"), labelNgrams.work_file3)
+file_output(paste0("//ngrams_",dateString, "_3word.csv"), labelNgrams.work_file3)
+
+## Processing, analysis and visualisation.
+summary2Gram <- aggregate(cbind(Cost, Clicks) ~ ngram + Labels, data = labelNgrams.work_file2, sum)
+summary2Gram$cpc <- summary2Gram$Cost/summary2Gram$Clicks
+summary2Gram$cpc[is.infinite(summary2Gram$cpc)] <- NA 
+dcast(summary2Gram, ngram ~ Labels, value.var = 'cpc', fun.aggregate = sum)
+
+summary3Gram <- aggregate(cbind(Cost, Clicks) ~ ngram + Labels, data = labelNgrams.work_file3, sum)
+summary3Gram$cpc <- summary3Gram$Cost/summary3Gram$Clicks
+summary3Gram$cpc[is.infinite(summary3Gram$cpc)] <- NA 
+dcast(summary3Gram, ngram ~ Labels, value.var = 'cpc', fun.aggregate = sum)
+
+
