@@ -1,3 +1,11 @@
+---
+title: "Ngram Example"
+author: "Anthony Contoleon"
+date: "Thursday, August 27, 2015"
+output: html_document
+---
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
 ## Prototype AdWords Search Term phrase part analysis 1.00
 ## Importing AdWords CSV.
 ## Processing for sharing.
@@ -68,7 +76,6 @@ searchTerm.work_file[, "Cost"] <- chr_number(searchTerm.work_file, "Cost")
 ## Loading label array and using the native match function.
 adwords.labels <- read.csv(labelsFile, header = TRUE, as.is=TRUE, sep=",", quote="\"")
 searchTerm.work_file$Labels <- adwords.labels$Labels[match(searchTerm.work_file$Campaign,adwords.labels$Campaign)]
-head(searchTerm.work_file)
 
 ## Create a subset to work with.
 searchTerm.work_file <- searchTerm.work_file[sample(nrow(searchTerm.work_file),size = 5000, replace = TRUE),]
@@ -151,7 +158,7 @@ summary2Gram$cpc[is.infinite(summary2Gram$cpc)] <- NA
 
 ## Basic display of clicks across labels per ngram.
 summary2Dcast <- dcast(summary2Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
-summary2Dcast$total <- rowSums(summary2Dcast[, c(2:9)])
+summary2Dcast$total <- rowSums(summary2Dcast[, c(2:3)])
 summary2Dcast <- arrange(summary2Dcast, desc(total))
 
 ## Same again for the 3 gram data
@@ -161,7 +168,7 @@ summary3Gram$cpc[is.infinite(summary3Gram$cpc)] <- NA
 
 ## Basic display of clicks across labels per ngram.
 summary3Dcast <- dcast(summary3Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
-summary3Dcast$total <- rowSums(summary3Dcast[, c(2:9)])
+summary3Dcast$total <- rowSums(summary3Dcast[, c(2:3)])
 summary3Dcast <- arrange(summary3Dcast, desc(total))
 
 ## Graph Time
@@ -181,10 +188,7 @@ summary2Graph$logClick <- log(summary2Graph$Clicks)
 summary2Graph$sdClick <- (summary2Graph$logClick - mean(summary2Graph$logClick))/sd(summary2Graph$logClick)
 
 ## Adding a number column to the data table for each row.
-summary2Graph[, Ngram.number := 1:.N]
-
-## Inital distribution graph.
-ggplot(summary2Graph, aes(x = Ngram.number, y = logClick)) + geom_area(fill= "black", alpha = .2) + geom_line() + ggtitle("Example Distribution of Clicks by Search Terms [unfiltered]")
+summary2Graph <- summary2Graph[, Ngram.number := 1:.N]
 
 ## Create data set for box plots showing distribution of CVR by campaign and labels.
 graphSet01.S2 <- aggregate(cbind(Impressions, Cost, Clicks, Converted.clicks) ~ ngram + Campaign + Labels, data = labelNgrams.work_file2, sum)
@@ -193,9 +197,6 @@ graphSet01.S2$logCost <- log(graphSet01.S2$Cost)
 
 ## Setting the data frame as a data table.
 graphSet01.S2 <- data.table(graphSet01.S2)
-
-## Distribution of ngrams by cost and clicks.
-ggplot(graphSet01.S2, aes(x = logCost, y = logClicks)) + geom_point() + ggtitle("Example Clicks to Cost Scatter Plot") + facet_wrap( ~ Labels, ncol = 2)
 
 ## Creating and cleaning the CVR column.
 graphSet01.S2$cvr <- graphSet01.S2$Converted.clicks/graphSet01.S2$Clicks
@@ -214,9 +215,6 @@ graphSet01.S2$sdCost <- sd(graphSet01.S2$Cost)
 ## Setting the data frame as a data table.
 graphSet01.S2 <- data.table(graphSet01.S2)
 
-## Quick scatter plot for visualising extreme values where only the highest cost examples are labelled.
-ggplot(graphSet01.S2[Clicks > 10], aes(x = Clicks, y = cvr, size = sqrtCost)) + geom_point() + facet_wrap( ~ Labels, ncol = 2) + geom_text(aes(label = ifelse((Cost-mean(Cost))/sdCost > 3, ngram, "")), hjust = 1, vjust = 1) + ggtitle("Example CVR scatterplot by Labels [unfiltered]")
-
 ## Create the cut down data set for the confidence interval graph.
 confSet <- graphSet01.S2[ Clicks > 10 & Converted.clicks > 0 ,c(1:3, 6:7, 10), with = FALSE]
 
@@ -231,5 +229,69 @@ grouped.2 <- group_by(searchTerm.work_file, Labels)
 confSum2.df <- summarise(grouped.2, cvr = sum(Converted.clicks)/sum(Clicks), n = length(Search.term))
 confSum2.df <- data.table(confSum2.df)
 
-## Plot campaign proportions and and the confidence intervals for ngrams in a chart against label effective CVR.
+```
+
+#Introduction
+
+This is a quick example of the kind of output being produced from the <a href="https://github.com/anthonypc/phrasePartAnalysis">https://github.com/anthonypc/phrasePartAnalysis</a> project as per the blog post:.
+
+The inital analysis of the file and the creation of the ngram lists are all dealt with in the code. Other than R, the entire process should not need any other tools. For ease of processing, I would recommend following the instructions on using Powershell to take care of non-latin characters to avoid issues with encoding.
+
+#Output
+
+For the most part the tables produced from line 145 are interesting for identifying ngrams shared across the account. The tables below and others like them with additional statistics would meet this need.
+
+```{r}
+head(summary2Dcast)
+head(summary3Dcast)
+
+head(arrange(summary2Gram, -desc(ngram)))
+head(arrange(summary3Gram, -desc(ngram)))
+
+```
+
+#Plots
+
+The graphs are fairly straight forward, though the initial distribution did require some work on the data set to produce the chart as per below.
+
+```{r, echo=FALSE}
+ggplot(summary2Graph, aes(x = Ngram.number, y = logClick)) + geom_area(fill= "black", alpha = .2) + geom_line() + ggtitle("Example Distribution of Clicks by Search Terms [unfiltered]")
+```
+
+A simple histogram is easy to produce. This example also includes a density plot.
+
+```{r, echo=FALSE}
+ggplot(graphSet01.S2, aes(x = Clicks, alpha = .5)) + geom_histogram() + ggtitle("Example Clicks Histogram") + facet_wrap( ~ Labels, ncol = 2)
+
+ggplot(graphSet01.S2, aes(x = Clicks, alpha = .5)) + geom_density() + ggtitle("Example Clicks Histogram") + facet_wrap( ~ Labels, ncol = 2)
+```
+
+Though for paid search I find that scatter plots are very useful, as generally I am looking for bivariate outliers rather than univariate .
+
+```{r, echo=FALSE}
+ggplot(graphSet01.S2, aes(x = logCost, y = logClicks)) + geom_point() + ggtitle("Example Clicks to Cost Scatter Plot") + facet_wrap( ~ Labels, ncol = 2)
+```
+
+The following is an example that manipulates the labels on the points to highlight those of interest, and leave the plot 'fairly' uncluttered.
+
+```{r, echo=FALSE}
+ggplot(graphSet01.S2[Clicks > 10], aes(x = Clicks, y = cvr, size = sqrtCost)) + geom_point() + facet_wrap( ~ Labels, ncol = 2) + geom_text(aes(label = ifelse((Cost-mean(Cost))/sdCost > 3, ngram, "")), hjust = 1, vjust = 1) + ggtitle("Example CVR scatterplot by Labels [unfiltered]")
+```
+
+The following table is a simple one looking at the distribution of the CVR per ngram within groups of labels and campaigns. The data is not really appropriate for this, but it is an interesting exercise in looking how the number of observations can affect the error of the mean CVR.
+
+```{r, echo=FALSE}
+head(confSum.df)
+```
+
+Which is then plotted here, where the line through each plot is the group mean.
+
+```{r, echo=FALSE}
 ggplot(confSum.df, aes(x = Campaign, y = mcvr, group = 1)) + geom_errorbar(width=.1, aes(ymin = mcvr - ci, ymax = mcvr + ci)) + geom_point(shape = 21, size = 3, fill = "white") + facet_wrap( ~ Labels, ncol = 2) + geom_hline(data = confSum2.df, aes(yintercept = cvr)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + scale_x_discrete(labels = abbreviate)
+```
+
+For context here is a plot of clicks to CVR.
+
+```{r, echo=FALSE}
+ggplot(graphSet01.S2, aes(x = Clicks, y = cvr)) + geom_point() + ggtitle("Example Clicks to CVR Scatter Plot") + facet_wrap( ~ Labels, ncol = 2)
+```
