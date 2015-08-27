@@ -19,15 +19,12 @@ Use following command to convert the file to ASCII to deal with unicode characte
 Get-Content [old file]|Set-Content [new file] -encoding ASCII
 
 ## Create lists of phrase parts.
-Create three text files with single work, two word and three word combinations and frequency counts
+Process is integrated with the main file.
 
-Columns as follows for phrase parts and frequency respectively: V1  V2
+## Exploratory Graphs
+Example graphs have been included in the code for visualising distributions and significant points within each group.
 
 # Example Data Files
 example_set.csv: Example adwords search term report
 
-label_file.csv: Campaign name and label reference
-
-ngram2_source.txt: List of two word combinations and frequency count.
-
-ngram3_source.txt: List of three word combinations and frequency count.
+label_file.csv: Campaign name and label reference. Used for grouping campaigns for simularity.
