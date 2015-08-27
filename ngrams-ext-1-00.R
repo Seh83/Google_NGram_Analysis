@@ -7,6 +7,12 @@ library(reshape2)
 library(plyr)
 library(dplyr)
 
+library(ngram)
+library(ggplot2)
+
+library(AppliedPredictiveModeling)
+library(caret)
+
 ## PROCESS SUMMARY
 # Download AdWords Report.
 #   Columns: "Account", "Device", "Network..with.search.partners.", "Search.term", "Match.type", "Clicks", "Impressions", "Cost", "Avg..position", "Added.Excluded", "Converted.clicks", "Campaign", "Ad.group", "Keyword"
@@ -14,17 +20,12 @@ library(dplyr)
 #   Open Windows Powershell. Navigate to the appropriate directory.
 #   Use following command to convert the file to ASCII to deal with unicode characters:
 #   Get-Content [old file]|Set-Content [new file] -encoding ASCII
-# Create lists of phrase parts.
-#   Create three text files with single work, two word and three word combinations and frequency counts
-#   Columns as follows for phrase parts and frequency respectively: V1  V2
 # Change settings and file references below.
 
 ## General settings.
-workingDirectory <- "C://directory//path" # Place all data files here #
+workingDirectory <- "C://data" # Place all data files here #
 adwordsFile <- "example_set.csv" # Processed search term report
 labelsFile <- "label_file.csv" # CSV file. Column heads: Campaign, Labels.
-twoWordList <- "ngram2_source.txt"
-threeWordList <- "ngram3_source.txt"
 dateString <- format(Sys.time(), "%Y%m%d")
 
 ## General Comments on data:
@@ -57,6 +58,44 @@ chr_number <- function(x, y) {
   x[,y] <- as.numeric(gsub("[^0-9\\.]","", x[,y]))
 }
 
+## Standard errors
+## http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                      conf.interval=.95, .drop=TRUE) {
+  library(plyr)
+  
+  # New version of length which can handle NA's: if na.rm==T, don't count them
+  length2 <- function (x, na.rm=FALSE) {
+    if (na.rm) sum(!is.na(x))
+    else       length(x)
+  }
+  
+  # This does the summary. For each group's data frame, return a vector with
+  # N, mean, and sd
+  datac <- ddply(data, groupvars, .drop=.drop,
+                 .fun = function(xx, col) {
+                   c(N    = length2(xx[[col]], na.rm=na.rm),
+                     mean = mean   (xx[[col]], na.rm=na.rm),
+                     sd   = sd     (xx[[col]], na.rm=na.rm)
+                   )
+                 },
+                 measurevar
+  )
+  
+  # Rename the "mean" column    
+  datac <- rename(datac, c("mean" = measurevar))
+  
+  datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+  
+  # Confidence interval multiplier for standard error
+  # Calculate t-statistic for confidence interval: 
+  # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+  ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+  datac$ci <- datac$se * ciMult
+  
+  return(datac)
+}
+
 ## This is formated for testing purposes, using static file reference.
 searchTerm.work_file <- adwords_import(adwordsFile)
 
@@ -69,9 +108,29 @@ adwords.labels <- read.csv(labelsFile, header = TRUE, as.is=TRUE, sep=",", quote
 searchTerm.work_file$Labels <- adwords.labels$Labels[match(searchTerm.work_file$Campaign,adwords.labels$Campaign)]
 head(searchTerm.work_file)
 
-## Load ngrams
-ngram2 <- read.csv(twoWordList, sep = "\t", head = FALSE)
-ngram3 <- read.csv(threeWordList, sep = "\t", head = FALSE)
+## Create a subset to work with.
+searchTerm.work_file <- searchTerm.work_file[sample(nrow(searchTerm.work_file),size = 5000, replace = TRUE),]
+
+## Creating the ngram objects and data frames from the 
+termVector <- toString(searchTerm.work_file[,'Search.term'])
+twoGram <- ngram(termVector)
+threeGram <- ngram(termVector, n = 3)
+
+## Create the ngram data frames.
+ngram2 <- data.frame(V1 = unique(gsub(",", "", get.ngrams(twoGram))))
+ngram3 <- data.frame(V1 = unique(gsub(",", "", get.ngrams(threeGram))))
+
+## Remove rows with ?? characters.
+ngram2 <- data.frame(V1 = ngram2[-grep("\\?\\?",ngram2[,1]),])
+ngram3 <- data.frame(V1 = ngram3[-grep("\\?\\?",ngram3[,1]),])
+
+## Replace numeric values with '##'.
+ngram2$V1 <- gsub("[0-9]+", "##", ngram2$V1)
+ngram3$V1 <- gsub("[0-9]+", "##", ngram3$V1)
+
+## Clean up duplicate values after numerics have been changed.
+ngram2 <- unique(ngram2)
+ngram3 <- unique(ngram3)
 
 ## Convert data frame to data table
 searchTerm.work_file <- data.table(searchTerm.work_file)
@@ -80,7 +139,7 @@ labelNgrams.work_file2 <- data.frame()
 ## Loops, because I just plain hate myself.
 for(i in ngram2$V1){
   tryCatch({
-    wip <- aggregate(cbind(Impressions, Clicks, Cost, Converted.clicks) ~ Labels + Campaign + Keyword + Search.term, data = searchTerm.work_file[Search.term  %like%  paste('^',i,'$', sep = "") | Search.term  %like%  paste('^',i,'\\s', sep = "") | Search.term  %like%  paste('\\s',i,'$', sep = "")], sum)
+    wip <- aggregate(cbind(Impressions, Clicks, Cost, Converted.clicks) ~ Labels + Campaign + Keyword + Search.term, data = searchTerm.work_file[Search.term  %like%  paste('%',i,'%', sep = "")], sum)
     wip[, "ngram"] <- i
     labelNgrams.work_file2 <- rbind(labelNgrams.work_file2, wip)
   }, error = function(e){})
@@ -103,7 +162,7 @@ labelNgrams.work_file3 <- data.frame()
 ## Loops, because I just plain hate myself.
 for(i in ngram3$V1){
   tryCatch({
-    wip <- aggregate(cbind(Impressions, Clicks, Cost, Converted.clicks) ~ Labels + Campaign + Keyword + Search.term, data = searchTerm.work_file[Search.term  %like%  paste('^',i,'$', sep = "") | Search.term  %like%  paste('^',i,'\\s', sep = "") | Search.term  %like%  paste('\\s',i,'$', sep = "")], sum)
+    wip <- aggregate(cbind(Impressions, Clicks, Cost, Converted.clicks) ~ Labels + Campaign + Keyword + Search.term, data = searchTerm.work_file[Search.term  %like%  paste('%',i,'%', sep = "")], sum)
     wip[, "ngram"] <- i
     labelNgrams.work_file3 <- rbind(labelNgrams.work_file3, wip)
   }, error = function(e){})
@@ -121,15 +180,110 @@ labelNgrams.work_file3$cpa[is.infinite(labelNgrams.work_file3$cpa)] <- NA
 ## Data Export
 file_output(paste0("//ngrams_",dateString, "_3word.csv"), labelNgrams.work_file3)
 
+## ngram tables by labels for account sections.
+
 ## Processing, analysis and visualisation.
 summary2Gram <- aggregate(cbind(Cost, Clicks) ~ ngram + Labels, data = labelNgrams.work_file2, sum)
 summary2Gram$cpc <- summary2Gram$Cost/summary2Gram$Clicks
 summary2Gram$cpc[is.infinite(summary2Gram$cpc)] <- NA 
-dcast(summary2Gram, ngram ~ Labels, value.var = 'cpc', fun.aggregate = sum)
 
+## Basic display of clicks across labels per ngram.
+summary2Dcast <- dcast(summary2Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
+summary2Dcast$total <- rowSums(summary2Dcast[, c(2:9)])
+summary2Dcast <- arrange(summary2Dcast, desc(total))
+
+## Same again for the 3 gram data
 summary3Gram <- aggregate(cbind(Cost, Clicks) ~ ngram + Labels, data = labelNgrams.work_file3, sum)
 summary3Gram$cpc <- summary3Gram$Cost/summary3Gram$Clicks
 summary3Gram$cpc[is.infinite(summary3Gram$cpc)] <- NA 
-dcast(summary3Gram, ngram ~ Labels, value.var = 'cpc', fun.aggregate = sum)
 
+## Basic display of clicks across labels per ngram.
+summary3Dcast <- dcast(summary3Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
+summary3Dcast$total <- rowSums(summary3Dcast[, c(2:9)])
+summary3Dcast <- arrange(summary3Dcast, desc(total))
 
+## Graph Time
+# A number of visualisations for examining distribution and characteristics of phrase parts in the account.
+
+## Display distribution of clicks by ngrams.
+# Create the data set for the graph.
+summary2Graph <- aggregate(cbind(Impressions, Cost, Clicks, Converted.clicks) ~ ngram, data = labelNgrams.work_file2, sum)
+
+## Set as data table.
+summary2Graph <- data.table(summary2Graph)
+#summary2Graph <- summary2Graph[Clicks > 30]
+
+## Change the order of the rows to descending by clicks. Perform a log transformation and a normalisation on Clicks.
+summary2Graph <- summary2Graph[order(-Clicks),]
+summary2Graph$logClick <- log(summary2Graph$Clicks)
+summary2Graph$sdClick <- (summary2Graph$logClick - mean(summary2Graph$logClick))/sd(summary2Graph$logClick)
+
+## Adding a number column to the data table for each row.
+summary2Graph[, Ngram.number := 1:.N]
+
+## Inital distribution graph.
+ggplot(summary2Graph, aes(x = Ngram.number, y = logClick)) + geom_area(fill= "black", alpha = .2) + geom_line() + ggtitle("Example Distribution of Clicks by Search Terms [unfiltered]")
+
+## Display distribution of clicks by ngrams and campaigns.
+boxplot2Graph <- aggregate(cbind(Impressions, Cost, Clicks, Converted.clicks) ~ ngram + Campaign + Labels, data = labelNgrams.work_file2, sum)
+
+## Setting the data frame as a data table.
+boxplot2Graph <- data.table(boxplot2Graph)
+
+## Creating and cleaning the CVR column.
+boxplot2Graph$cvr <- boxplot2Graph$Converted.clicks/boxplot2Graph$Clicks
+boxplot2Graph$cvr[is.infinite(boxplot2Graph$cvr)] <- NA
+
+## Creating a box plot of the CVR by campaign within a certain label or set of labels
+ggplot(boxplot2Graph[Clicks > 10], aes(x = Campaign, y = cvr)) + geom_boxplot() + ggtitle("Example CVR box plot by Labels [unfiltered]")
+
+## Create data set for box plots showing distribution of CVR by campaign and labels.
+graphSet01.S2 <- aggregate(cbind(Impressions, Cost, Clicks, Converted.clicks) ~ ngram + Campaign + Labels, data = labelNgrams.work_file2, sum)
+graphSet01.S2$logClicks <- log(graphSet01.S2$Clicks)
+graphSet01.S2$logCost <- log(graphSet01.S2$Cost)
+
+## Setting the data frame as a data table.
+graphSet01.S2 <- data.table(graphSet01.S2)
+
+## Distribution of ngrams by cost and clicks.
+ggplot(graphSet01.S2, aes(x = logCost, y = logClicks)) + geom_point() + ggtitle("Example Clicks to Cost Scatter Plot") + facet_wrap( ~ Labels, ncol = 2)
+
+## Creating and cleaning the CVR column.
+graphSet01.S2$cvr <- graphSet01.S2$Converted.clicks/graphSet01.S2$Clicks
+graphSet01.S2$cvr[is.infinite(graphSet01.S2$cvr)] <- NA
+graphSet01.S2$cpc <- graphSet01.S2$Cost/graphSet01.S2$Clicks
+graphSet01.S2$cpc[is.infinite(graphSet01.S2$cpc)] <- NA
+graphSet01.S2$cpa <- graphSet01.S2$Cost/graphSet01.S2$Converted.clicks
+graphSet01.S2$cpa[is.infinite(graphSet01.S2$cpa)] <- NA
+
+## Create log values for graphing.
+graphSet01.S2$logClicks <- log(graphSet01.S2$Clicks)
+graphSet01.S2$logCost <- log(graphSet01.S2$Cost)
+graphSet01.S2$sqrtCost <- sqrt(graphSet01.S2$Cost)
+graphSet01.S2$sdCost <- sd(graphSet01.S2$Cost)
+
+## Setting the data frame as a data table.
+graphSet01.S2 <- data.table(graphSet01.S2)
+
+## Quick scatter plot for visualising extreme values where only the highest cost examples are labelled.
+ggplot(graphSet01.S2[Clicks > 10], aes(x = Clicks, y = cvr, size = sqrtCost)) + geom_point() + facet_wrap( ~ Labels, ncol = 2) + geom_text(aes(label = ifelse((Cost-mean(Cost))/sdCost > 3, ngram, "")), hjust = 1, vjust = 1) + ggtitle("Example CVR scatterplot by Labels [unfiltered]")
+
+## Create the cut down data set for the confidence interval graph.
+confSet <- graphSet01.S2[ Clicks > 10 & Converted.clicks > 0 ,c(1:3, 6:7, 10), with = FALSE]
+
+## Creating a box plot of the CVR by campaign within a certain label or set of labels.
+ggplot(confSet, aes(x = Campaign, y = cvr)) + geom_boxplot() + ggtitle("Example CVR box plot by Labels [unfiltered]") + geom_point() + theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+
+## Create the grouping for the summarise function.
+grouped <- group_by(confSet, Campaign, Labels)
+
+## Create a data set including summary statistics for differences from means.
+confSum.df <- summarise(grouped, mcvr = sum(Converted.clicks)/sum(Clicks), n = length(cvr), mean = mean(cvr), sd = sd(cvr), se = sd(cvr) / sqrt(length(cvr)), ci = (sd(cvr) / sqrt(length(cvr))) * (qt(0.95/2 + .5, length(cvr)-1)))
+
+## Means for labels.
+grouped.2 <- group_by(searchTerm.work_file, Labels)
+confSum2.df <- summarise(grouped.2, cvr = sum(Converted.clicks)/sum(Clicks), n = length(Search.term))
+confSum2.df <- data.table(confSum2.df)
+
+## Plot label and individual ngram means and the confidence intervals in a chart.
+ggplot(confSum.df, aes(x = Campaign, y = mcvr, group = 1)) + geom_line() + geom_errorbar(width=.1, aes(ymin = mcvr - ci, ymax = mcvr + ci)) + geom_point(shape = 21, size = 3, fill = "white") + facet_wrap( ~ Labels, ncol = 2) + geom_hline(data = confSum2.df, aes(yintercept = cvr))
