@@ -151,7 +151,7 @@ summary2Gram$cpc[is.infinite(summary2Gram$cpc)] <- NA
 
 ## Basic display of clicks across labels per ngram.
 summary2Dcast <- dcast(summary2Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
-summary2Dcast$total <- rowSums(summary2Dcast[, c(2:9)])
+summary2Dcast$total <- rowSums(summary2Dcast[, c(2:3)])
 summary2Dcast <- arrange(summary2Dcast, desc(total))
 
 ## Same again for the 3 gram data
@@ -161,7 +161,7 @@ summary3Gram$cpc[is.infinite(summary3Gram$cpc)] <- NA
 
 ## Basic display of clicks across labels per ngram.
 summary3Dcast <- dcast(summary3Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
-summary3Dcast$total <- rowSums(summary3Dcast[, c(2:9)])
+summary3Dcast$total <- rowSums(summary3Dcast[, c(2:3)])
 summary3Dcast <- arrange(summary3Dcast, desc(total))
 
 ## Graph Time
