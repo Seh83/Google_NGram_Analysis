@@ -42,46 +42,62 @@ fit <- lm(Converted.clicks ~ Campaign * Clicks, data = fitSet02.dt, weight = Cos
 
 # Assessing Outliers
 outlierTest(fit) # Bonferonni p-value for most extreme obs
-fitSet02.dt[c(74,126,161,138,123),]
+rows01 <- c(126, 161, 123, 138, 74)
+data01 <- fitSet02.dt[c(126, 161, 123, 138, 74),]
+data01$Observation <- rows01
+data01
 
-## Plots
-qqPlot(fit, main="QQ Plot") #qq plot for studentized resid 
-leveragePlots(fit) # leverage plots
+labelNgrams.work_file2 <- data.table(labelNgrams.work_file2)
+kable(head(arrange(labelNgrams.work_file2[ngram %like% "name word" | ngram %like% "next other" | ngram %like% "word uno" | ngram %like% "test string" | ngram %like% "text word", c(3:8,13), with = FALSE], desc(Clicks)), 10), digits=2)
 
-# Influential Observations
-# added variable plots 
-avPlots(fit, id.n = 4)
+summary2Camp <- aggregate(cbind(Converted.clicks, Clicks) ~ ngram + Campaign, data = labelNgrams.work_file2[ngram %like% "name word" | ngram %like% "next other" | ngram %like% "word uno" | ngram %like% "test string" | ngram %like% "text word"], sum)
+
+summary2Camp$cvr <- summary2Camp$Converted.clicks/summary2Camp$Clicks
+summary2Camp$cvr[is.infinite(summary2Camp$cvr)] <- NA 
+
+summary2DCam <- dcast(summary2Camp, ngram ~ Campaign, value.var = 'Clicks', fun.aggregate = sum)
+summary2DCam
+
+summary2DCav <- dcast(summary2Camp, ngram ~ Campaign, value.var = 'cvr')
+summary2DCav
 
 # Cook's D plot
 # identify D values > 4/(n-k-1) 
 cutoff <- 4/((nrow(fitSet02.df)-length(fit$coefficients)-2)) 
 plot(fit, which = 4, cook.levels = cutoff)
-fitSet02.dt[c(74,123,126),]
+
+rows02 <- c(28, 74, 123)
+data02 <- fitSet02.dt[c(28, 74, 123),]
+data02$Observation <- rows02
+data02
 
 # Influence Plot 
 influencePlot(fit, id.method = "note.worthy", main = "Influence Plot", sub = "Circle size is proportial to Cook's Distance", id.cex = 1, id.n = 2)
-fitSet02.dt[c(28,74,96,123,126),]
 
-# Another lot of plots
-infIndexPlot(fit, vars=c("Cook", "Studentized", "Bonf", "hat"), main = "Diagnostic Plots",  id.method = cooks.distance(fit), id.n = 4)
+rows03 <- c(28, 74, 96, 123)
+data03 <- fitSet02.dt[c(28, 74, 96, 123),]
+data03$Observation <- rows03
+data03
 
 ## Produce a table of extreme rows using Mahalanobis Disance and Cook's D.
 for(i in c("Campaign 01", "Campaign 02", "Campaign 03", "Campaign 04")) {
 ## Calculate overall Mahalonbis Distance for clicks and conversion numbers to identify outlying values.
-  sx <- cov(fitSet02.dt[Campaign == i,6:7, with = FALSE])
-  m1 <- mahalanobis(fitSet02.dt[Campaign == i,6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == i, 6:7, with = FALSE]), sx)
+sx <- cov(fitSet02.dt[Campaign == i,6:7, with = FALSE])
+m1 <- mahalanobis(fitSet02.dt[Campaign == i,6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == i, 6:7, with = FALSE]), sx)
 
 ## Caculate and add Cook's Distance as per the fited model.
-  d1 <- cooks.distance(fit)
-  wip <- cbind(fitSet02.dt[Campaign == i,], m1, d1)
+d1 <- cooks.distance(fit)
+wip <- cbind(fitSet02.dt[Campaign == i,], m1, d1)
 
 ## Print the rows reaching a certain threshold.
-  wip <- na.omit(wip[d1 > 4/nrow(wip), ])
+wip <- na.omit(wip[d1 > 4/nrow(wip), ])
 
-plot <- ggplot(wip, aes(x = Clicks, y = Converted.clicks, size = d1)) + geom_point() + geom_text(aes(label = ifelse((d1 > 4/nrow(wip)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for ",i," with Mahalanobis Distance", sep = ""))
+plot <- ggplot(wip, aes(x = Clicks, y = Converted.clicks)) + geom_point() + geom_text(aes(label = ifelse((d1 > 4/nrow(wip)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for ",i," with Cook's Distance", sep = ""))
 
 print(plot)
-print(wip)
+
+print(arrange(wip, desc(d1)))
+
 }
 
 ## Export file for review.
