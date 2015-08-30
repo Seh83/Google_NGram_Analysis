@@ -353,10 +353,32 @@ The following is a simple check for outliers against the fitted linear model wit
 ```{r, echo=FALSE}
 # Assessing Outliers
 outlierTest(fit) # Bonferonni p-value for most extreme obs
-kable(fitSet02.dt[c(74, 126, 161, 123),], digits=2)
+rows01 <- c(126, 161, 123, 138, 74)
+data01 <- fitSet02.dt[c(126, 161, 123, 138, 74),]
+data01$Observation <- rows01
+kable(data01, digits=2)
 ```
 
-The next is a look at the rows returned by Cook's Distance.
+The first table is the top ten individual observations by clicks matching to the ngrams identified above. Next is a quick review of the performance of the ngrams identified as outliers by campaign.
+
+```{r, echo=FALSE}
+labelNgrams.work_file2 <- data.table(labelNgrams.work_file2)
+
+kable(head(arrange(labelNgrams.work_file2[ngram %like% "name word" | ngram %like% "next other" | ngram %like% "word uno" | ngram %like% "test string" | ngram %like% "text word", c(3:8,13), with = FALSE], desc(Clicks)), 10), digits=2)
+
+summary2Camp <- aggregate(cbind(Converted.clicks, Clicks) ~ ngram + Campaign, data = labelNgrams.work_file2[ngram %like% "name word" | ngram %like% "next other" | ngram %like% "word uno" | ngram %like% "test string" | ngram %like% "text word"], sum)
+
+summary2Camp$cvr <- summary2Camp$Converted.clicks/summary2Camp$Clicks
+summary2Camp$cvr[is.infinite(summary2Camp$cvr)] <- NA 
+
+summary2DCam <- dcast(summary2Camp, ngram ~ Campaign, value.var = 'Clicks', fun.aggregate = sum)
+kable(summary2DCam, digits=2)
+
+summary2DCav <- dcast(summary2Camp, ngram ~ Campaign, value.var = 'cvr')
+kable(summary2DCav, digits=2)
+```
+
+There are a number of differebt methods included here for identifying extreme points. The next is a look at the rows returned by Cook's Distance.
 
 ```{r, echo=FALSE}
 # Cook's D plot
@@ -364,16 +386,23 @@ The next is a look at the rows returned by Cook's Distance.
 cutoff <- 4/((nrow(fitSet02.df)-length(fit$coefficients)-2)) 
 plot(fit, which = 4, cook.levels = cutoff)
 
-kable(fitSet02.dt[c(28, 74, 123),], digits=2)
+rows02 <- c(28, 74, 123)
+data02 <- fitSet02.dt[c(28, 74, 123),]
+data02$Observation <- rows02
+
+kable(data02, digits=2)
 ```
 
 Next is a plot of residuals against the model where the Cook's distance of each point is displayed as the size of the circle for each point.
 
 ```{r, echo=FALSE}
-# Influence Plot 
 influencePlot(fit, id.method = "note.worthy", main = "Influence Plot", sub = "Circle size is proportial to Cook's Distance", id.cex = 1, id.n = 2)
 
-kable(fitSet02.dt[c(28, 74, 96, 123),], digits=2)
+rows03 <- c(28, 74, 96, 123)
+data03 <- fitSet02.dt[c(28, 74, 96, 123),]
+data03$Observation <- rows03
+
+kable(data03, digits=2)
 ```
 
 The following are a series of graphs and tables of the relationship between clicks and converted clicks. Both Mahalanobis Disance and Cook's Distance are included in the tables for each campaign.
