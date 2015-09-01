@@ -28,3 +28,14 @@ Example graphs have been included in the code for visualising distributions and 
 example_set.csv: Example adwords search term report
 
 label_file.csv: Campaign name and label reference. Used for grouping campaigns for simularity.
+
+# Working Files
+
+ngrams-ext-1-00.R
+The main file that takes the search term report and produces a number of csv exports and data frames used for analysis.
+
+ngram-outlier-influence-0-01.R
+Most of the analysis and graphing is done in this file. The data frames produced in the ngrams-ext-1-00.R file need to be available in the work space for this one to work. Some of the tools used are included as an example, and some of the techniques are not being applied strictly appropriately.
+
+overview.RMD
+An R markdown file for producing a HTML document running through the example file as per this repository.
