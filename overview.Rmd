@@ -23,8 +23,6 @@ library(caret)
 
 library(knitr)
 
-options(scipen=1, digits=2)
-
 ## PROCESS SUMMARY
 # Download AdWords Report.
 #   Columns: "Account", "Device", "Network..with.search.partners.", "Search.term", "Match.type", "Clicks", "Impressions", "Cost", "Avg..position", "Added.Excluded", "Converted.clicks", "Campaign", "Ad.group", "Keyword"
@@ -35,7 +33,6 @@ options(scipen=1, digits=2)
 # Change settings and file references below.
 
 ## General settings.
-workingDirectory <- "C://Users//Anthony//Documents//GitHub//phrasePartAnalysis" # Place all data files here #
 adwordsFile <- "example_set.csv" # Processed search term report
 labelsFile <- "label_file.csv" # CSV file. Column heads: Campaign, Labels.
 dateString <- format(Sys.time(), "%Y%m%d")
@@ -43,18 +40,6 @@ dateString <- format(Sys.time(), "%Y%m%d")
 ## General Comments on data:
 # The numbers provided by AdWords need be be processed to coerce to int/number, due to four digital and up numbers exported with ','
 # Dates need to be processed to change from chr to date
-
-## Setting up the working directory for all data file references.
-# Ensure all data files for use are in the working directory.
-setwd(workingDirectory)
-work_dir <- getwd()
-
-## Function for exporting tables to CSVs. 
-##Directory path other than work directory and extension needs to be defined 'x', 'y' is the table to be exported.
-file_output <- function (x, y){
-  path <- paste(work_dir, x, sep ="")
-  write.table(y, file = path, sep = ",", row.names = FALSE)
-}
 
 ## Function import Adwords file. Define file name and remove the 'Total' row.
 ## Non-latin characters. This was dealt with through converting to ASCII via powershell.
@@ -108,6 +93,9 @@ ngram3 <- unique(ngram3)
 ## Convert data frame to data table
 searchTerm.work_file <- data.table(searchTerm.work_file)
 labelNgrams.work_file2 <- data.frame()
+```
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
 ## Loops, because I just plain hate myself.
 for(i in ngram2$V1){
@@ -126,9 +114,6 @@ labelNgrams.work_file2$cvr <- labelNgrams.work_file2$Converted.clicks/labelNgram
 
 ## Sort out inf values for processing.
 labelNgrams.work_file2$cpa[is.infinite(labelNgrams.work_file2$cpa)] <- NA 
-
-## Data Export
-file_output(paste0("//ngrams_",dateString, "_2word.csv"), labelNgrams.work_file2)
 
 labelNgrams.work_file3 <- data.frame()
 
@@ -149,31 +134,44 @@ labelNgrams.work_file3$cvr <- labelNgrams.work_file3$Converted.clicks/labelNgram
 
 ## Sort out inf values for processing.
 labelNgrams.work_file3$cpa[is.infinite(labelNgrams.work_file3$cpa)] <- NA 
+```
 
-## Data Export
-file_output(paste0("//ngrams_",dateString, "_3word.csv"), labelNgrams.work_file3)
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
 ## ngram tables by labels for account sections.
 
 ## Processing, analysis and visualisation.
-summary2Gram <- aggregate(cbind(Cost, Clicks) ~ ngram + Labels, data = labelNgrams.work_file2, sum)
+summary2Gram <- aggregate(cbind(Cost, Clicks, Converted.clicks) ~ ngram + Labels, data = labelNgrams.work_file2, sum)
 summary2Gram$cpc <- summary2Gram$Cost/summary2Gram$Clicks
 summary2Gram$cpc[is.infinite(summary2Gram$cpc)] <- NA 
+summary2Gram$cvr <- summary2Gram$Clicks/summary2Gram$Converted.clicks
+summary2Gram$cvr[is.infinite(summary2Gram$cvr)] <- NA 
 
 ## Basic display of clicks across labels per ngram.
 summary2Dcast <- dcast(summary2Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
 summary2Dcast$total <- rowSums(summary2Dcast[, c(2:3)])
 summary2Dcast <- arrange(summary2Dcast, desc(total))
 
+## Basic display of clicks across labels per ngram.
+summary2Dcasta <- dcast(summary2Gram, ngram ~ Labels, value.var = 'cvr', fun.aggregate = max)
+
 ## Same again for the 3 gram data
-summary3Gram <- aggregate(cbind(Cost, Clicks) ~ ngram + Labels, data = labelNgrams.work_file3, sum)
+summary3Gram <- aggregate(cbind(Cost, Clicks, Converted.clicks) ~ ngram + Labels, data = labelNgrams.work_file3, sum)
 summary3Gram$cpc <- summary3Gram$Cost/summary3Gram$Clicks
 summary3Gram$cpc[is.infinite(summary3Gram$cpc)] <- NA 
+summary3Gram$cvr <- summary3Gram$Clicks/summary3Gram$Converted.clicks
+summary3Gram$cvr[is.infinite(summary3Gram$cvr)] <- NA 
 
 ## Basic display of clicks across labels per ngram.
 summary3Dcast <- dcast(summary3Gram, ngram ~ Labels, value.var = 'Clicks', fun.aggregate = sum)
 summary3Dcast$total <- rowSums(summary3Dcast[, c(2:3)])
 summary3Dcast <- arrange(summary3Dcast, desc(total))
+
+## Basic display of clicks across labels per ngram.
+summary3Dcasta <- dcast(summary3Gram, ngram ~ Labels, value.var = 'cvr', fun.aggregate = max)
+```
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
 
 ## Graph Time
 # A number of visualisations for examining distribution and characteristics of phrase parts in the account.
@@ -237,20 +235,43 @@ confSum2.df <- data.table(confSum2.df)
 
 #Introduction
 
-This is a quick example of the kind of output being produced from the <a href="https://github.com/anthonypc/phrasePartAnalysis">https://github.com/anthonypc/phrasePartAnalysis</a> project as per the blog post:.
+This is a quick example of the kind of output being produced from the <a href="https://github.com/anthonypc/phrasePartAnalysis">https://github.com/anthonypc/phrasePartAnalysis</a> project as per the blog post: <a href="http://contoleon.com/blog/2015/08/30/text-processing-n-grams-and-paid-search/">Text Processing, N-Grams And Paid Search</a>.
 
 The inital analysis of the file and the creation of the ngram lists are all dealt with in the code. Other than R, the entire process should not need any other tools. For ease of processing, I would recommend following the instructions on using Powershell to take care of non-latin characters to avoid issues with encoding.
 
+Please read the read me in GitHub and the comments in the code itself for an explaination on how it works, what the inputs need to be and an overview of the process.
+
+#Summary
+
+This process identifies two and three word combinations in search terms and assigned performance statistics against these. The objective is to identify phrase parts within the account, some of which will be shared between campaigns and adgroups, and use the information to shape keyword strategy.
+
 #Output
 
-For the most part the tables produced from line 145 are interesting for identifying ngrams shared across the account. The tables below and others like them with additional statistics would meet this need.
+There are two files as per the readme used to produce the output for this file. Most of the output is produced by the ngram-outlier-influence-0-01.R script, though some of the example output from ngrams-ext-1-00.R is included.
+
+##ngrams-ext-1-00.R Output
+
+The tables produced from line 145 in the main R script (ngrams-ext-1-00.R) are useful for identifying ngrams shared across the account. The tables below and others like them with additional statistics would meet this need.
+
+The volume of clicks between the labels in the example set are not even for the most part.
 
 ```{r}
 kable(head(summary2Dcast), digits=2)
 kable(head(summary3Dcast), digits=2)
+```
 
-kable(head(arrange(summary2Gram, -desc(ngram))), digits=2)
-kable(head(arrange(summary3Gram, -desc(ngram))), digits=2)
+The following are displaying conversion rate by ngram and label.
+
+```{r}
+kable(head(summary3Dcasta), digits=2)
+kable(head(summary3Dcasta), digits=2)
+```
+
+The following tables are the main CSV output, with a file produced against two and three word phrase part combinations.
+
+```{r}
+kable(head(arrange(labelNgrams.work_file2, desc(Clicks))), digits=2)
+kable(head(arrange(labelNgrams.work_file3, desc(Clicks))), digits=2)
 
 ```
 
@@ -262,7 +283,7 @@ The graphs are fairly straight forward, though the initial distribution did requ
 ggplot(summary2Graph, aes(x = Ngram.number, y = logClick)) + geom_area(fill= "black", alpha = .2) + geom_line() + ggtitle("Example Distribution of Clicks by Search Terms [unfiltered]")
 ```
 
-A simple histogram is easy to produce. This example also includes a density plot.
+A histogram for clicks within the account by ngram demonstrates the distribution of volume. This example also includes a density plot.
 
 ```{r, echo=FALSE}
 ggplot(graphSet01.S2, aes(x = Clicks, alpha = .5)) + geom_histogram() + ggtitle("Example Clicks Histogram") + facet_wrap( ~ Labels, ncol = 2)
@@ -270,7 +291,7 @@ ggplot(graphSet01.S2, aes(x = Clicks, alpha = .5)) + geom_histogram() + ggtitle(
 ggplot(graphSet01.S2, aes(x = Clicks, alpha = .5)) + geom_density() + ggtitle("Example Clicks Histogram") + facet_wrap( ~ Labels, ncol = 2)
 ```
 
-Though for paid search I find that scatter plots are very useful, as generally I am looking for bivariate outliers rather than univariate .
+Univariate distributions are useful. With a lot of paid search analysis scatter plots are very useful as bivariate outliers are often more informative than univariate. Such as data points with extreme cost and volume figures as per this chart. The values are log transformed to produce a slightly more normal distribution.
 
 ```{r, echo=FALSE}
 ggplot(graphSet01.S2, aes(x = logCost, y = logClicks)) + geom_point() + ggtitle("Example Clicks to Cost Scatter Plot") + facet_wrap( ~ Labels, ncol = 2)
@@ -279,7 +300,7 @@ ggplot(graphSet01.S2, aes(x = logCost, y = logClicks)) + geom_point() + ggtitle(
 The following is an example that manipulates the labels on the points to highlight those of interest, and leave the plot 'fairly' uncluttered.
 
 ```{r, echo=FALSE}
-ggplot(graphSet01.S2[Clicks > 10], aes(x = Clicks, y = cvr, size = sqrtCost)) + geom_point() + facet_wrap( ~ Labels, ncol = 2) + geom_text(aes(label = ifelse((Cost-mean(Cost))/sdCost > 3, ngram, "")), hjust = 1, vjust = 1) + ggtitle("Example CVR scatterplot by Labels [unfiltered]")
+ggplot(graphSet01.S2[Clicks > 10], aes(x = log(Clicks), y = log(cvr), size = sqrtCost)) + geom_point() + facet_wrap( ~ Labels, ncol = 2) + geom_text(aes(label = ifelse((Cost-mean(Cost))/sdCost > 3, ngram, "")), hjust = 1, vjust = 1) + ggtitle("Example CVR scatterplot by Labels [unfiltered]")
 ```
 
 The following table is a simple one looking at the distribution of the CVR per ngram within groups of labels and campaigns. The data is not really appropriate for this, but it is an interesting exercise in looking how the number of observations can affect the error of the mean CVR.
@@ -288,13 +309,13 @@ The following table is a simple one looking at the distribution of the CVR per n
 kable(head(confSum.df), digits=2)
 ```
 
-Which is then plotted here, where the line through each plot is the group mean.
+This is another average of a CVR plot where the actual CVR for the group (label in this case) is plotted as a line through each facet.
 
 ```{r, echo=FALSE,warning=FALSE}
 ggplot(confSum.df, aes(x = Campaign, y = mcvr, group = 1)) + geom_errorbar(width=.1, aes(ymin = mcvr - ci, ymax = mcvr + ci)) + geom_point(shape = 21, size = 3, fill = "white") + facet_wrap( ~ Labels, ncol = 2) + geom_hline(data = confSum2.df, aes(yintercept = cvr)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + scale_x_discrete(labels = abbreviate)
 ```
 
-For context here is a plot of clicks to CVR.
+For context here is a plot of clicks to CVR without a transformation applied to the values.
 
 ```{r, echo=FALSE,warning=FALSE}
 ggplot(graphSet01.S2, aes(x = Clicks, y = cvr)) + geom_point() + ggtitle("Example Clicks to CVR Scatter Plot") + facet_wrap( ~ Labels, ncol = 2)
@@ -302,7 +323,25 @@ ggplot(graphSet01.S2, aes(x = Clicks, y = cvr)) + geom_point() + ggtitle("Exampl
 
 #Extreme Values
 
-There are a few techniques used for testing assumptions for multivariate regression, <a href="https://en.wikipedia.org/wiki/Mahalanobis_distance">Mahalanobis Distance</a> and <a href="https://en.wikipedia.org/wiki/Cook%27s_distance">Cook's Distance</a>. The data used here is certainly not appropriate for regression, the two tests mentioned above can be used to identify points that do not exhibit the same relationship between Clicks and Conversions.
+##ngram-outlier-influence-0-01.R Output
+
+Ideally keywords grouped together in a paid search account perform more or less the same, where the relationship between what is spent and how much traffic is recieved should be close, and the same for the number of clicks and the number of conversions. 
+
+There are a few techniques used for testing assumptions for multivariate regression. A number of these are used for identifying outliers, those with high leverage and influenctial data points. Both <a href="https://en.wikipedia.org/wiki/Mahalanobis_distance">Mahalanobis Distance</a> and <a href="https://en.wikipedia.org/wiki/Cook%27s_distance">Cook's Distance</a> are used to address these issues. The data used here is certainly not appropriate for regression, the two tests mentioned above can be used to identify points that do not exhibit the same relationship between Clicks and Conversions.
+
+Most distributions of those values would look a little more like this, where overtime there should be a relationship between the two values as optimisation activity in the account stablises performance. Though most likely with a heavier skew towards 0 on either axis. The example set in the repository does not.
+
+```{r, echo=FALSE}
+x <- qnorm(runif(100,min=pnorm(0),max=pnorm(20)), mean = 5, sd = 1)
+y <- qnorm(runif(100,min=pnorm(0),max=pnorm(20)), mean = 7, sd = 2)
+
+c <- data.frame(x,y)
+x_name <- "clicks"
+y_name <- "cost"
+names(c) <- c(x_name,y_name)
+ggplot(c, aes(x = clicks, y = cost)) + geom_point() + ggtitle("Hypothetical Random Normal Distribution")
+```
+
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 ## Assessing for the outliers.
@@ -314,13 +353,6 @@ library(MASS)
 library(QuantPsyc)
 library(Hmisc)
 library(corrplot)
-
-## Function for exporting tables to CSVs. 
-##Directory path other than work directory and extension needs to be defined 'x', 'y' is the table to be exported.
-file_output <- function (x, y){
-  path <- paste(work_dir, x, sep ="")
-  write.table(y, file = path, sep = ",", row.names = FALSE)
-}
 
 ## This is going to be based on a simple general linear model
 is.nan.data.frame <- function(x)
@@ -350,11 +382,13 @@ fit <- lm(Converted.clicks ~ Campaign * Clicks, data = fitSet02.dt, weight = Cos
 
 The following is a simple check for outliers against the fitted linear model with conversions as an outcome by clicks against campaigns and weighted on cost.
 
+The outliers reported below where identified by a Bonferroni Outlier Test as per the car pacakge.
+
 ```{r, echo=FALSE}
 # Assessing Outliers
 outlierTest(fit) # Bonferonni p-value for most extreme obs
-rows01 <- c(126, 161, 123, 138, 74)
-data01 <- fitSet02.dt[c(126, 161, 123, 138, 74),]
+rows01 <- c(126, 161, 123, 74)
+data01 <- fitSet02.dt[c(126, 161, 123, 74),]
 data01$Observation <- rows01
 kable(data01, digits=2)
 ```
@@ -367,18 +401,28 @@ labelNgrams.work_file2 <- data.table(labelNgrams.work_file2)
 kable(head(arrange(labelNgrams.work_file2[ngram %like% "name word" | ngram %like% "next other" | ngram %like% "word uno" | ngram %like% "test string" | ngram %like% "text word", c(3:8,13), with = FALSE], desc(Clicks)), 10), digits=2)
 
 summary2Camp <- aggregate(cbind(Converted.clicks, Clicks) ~ ngram + Campaign, data = labelNgrams.work_file2[ngram %like% "name word" | ngram %like% "next other" | ngram %like% "word uno" | ngram %like% "test string" | ngram %like% "text word"], sum)
+````
 
+The following is a table of clicks by ngram and campaign.
+
+```{r, echo=FALSE}
 summary2Camp$cvr <- summary2Camp$Converted.clicks/summary2Camp$Clicks
 summary2Camp$cvr[is.infinite(summary2Camp$cvr)] <- NA 
 
 summary2DCam <- dcast(summary2Camp, ngram ~ Campaign, value.var = 'Clicks', fun.aggregate = sum)
 kable(summary2DCam, digits=2)
+```
 
+The following is a table of conversion rate by ngram and campaign.
+
+```{r, echo=FALSE}
 summary2DCav <- dcast(summary2Camp, ngram ~ Campaign, value.var = 'cvr')
 kable(summary2DCav, digits=2)
 ```
 
-There are a number of differebt methods included here for identifying extreme points. The next is a look at the rows returned by Cook's Distance.
+# Other Tests
+
+There are a number of different methods included here for identifying extreme points. The next is a look at the rows returned by Cook's Distance. Test identified fewer points than the previous one, and it also identified observation 28, which has an unusually low number of conversions for the clicks it has recieved.
 
 ```{r, echo=FALSE}
 # Cook's D plot
@@ -393,10 +437,12 @@ data02$Observation <- rows02
 kable(data02, digits=2)
 ```
 
-Next is a plot of residuals against the model where the Cook's distance of each point is displayed as the size of the circle for each point.
+Next is a plot of residuals against the model where the Cook's distance of each point is displayed as the size of the circle for each point. The plot has labeled the most influential points, those which have the most affect on the linear model created at the start of this process.
+
+Again the observations identified were different from the outlier test.
 
 ```{r, echo=FALSE}
-influencePlot(fit, id.method = "note.worthy", main = "Influence Plot", sub = "Circle size is proportial to Cook's Distance", id.cex = 1, id.n = 2)
+influencePlot(fit, id.method = "note.worthy", main = "Influence Plot", sub = "Circle size is proportial to Cook's Distance", id.cex = 1, id.n = 6)
 
 rows03 <- c(28, 74, 96, 123)
 data03 <- fitSet02.dt[c(28, 74, 96, 123),]
@@ -405,29 +451,88 @@ data03$Observation <- rows03
 kable(data03, digits=2)
 ```
 
+# By Campaign
+
 The following are a series of graphs and tables of the relationship between clicks and converted clicks. Both Mahalanobis Disance and Cook's Distance are included in the tables for each campaign.
 
+In the output below the first table for each campaign under the scatterplot is sorted by Cook's Distance and the second Mahalanobis Disance and It is interesting that each table while sharing observations, orders them differently.
+
+## Campaign 01
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
-## Produce a table of extreme rows using Mahalanobis Disance and Cook's D.
-for(i in c("Campaign 01", "Campaign 02", "Campaign 03", "Campaign 04")) {
 ## Calculate overall Mahalonbis Distance for clicks and conversion numbers to identify outlying values.
-  sx <- cov(fitSet02.dt[Campaign == i,6:7, with = FALSE])
-  m1 <- mahalanobis(fitSet02.dt[Campaign == i,6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == i, 6:7, with = FALSE]), sx)
+sx1 <- cov(fitSet02.dt[Campaign == "Campaign 01" & Clicks > 0,6:7, with = FALSE])
+md1 <- mahalanobis(fitSet02.dt[Campaign == "Campaign 01" & Clicks > 0,6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == "Campaign 01", 6:7, with = FALSE]), sx1)
 
 ## Caculate and add Cook's Distance as per the fited model.
-  d1 <- cooks.distance(fit)
-  wip <- cbind(fitSet02.dt[Campaign == i,], m1, d1)
+cd1 <- cooks.distance(
+  lm(Converted.clicks ~ Clicks, data = fitSet02.dt[Campaign == "Campaign 01" & Clicks > 0], weight = Cost)
+  )
+wip1 <- cbind(fitSet02.dt[Campaign == "Campaign 01" & Clicks > 0,], md1, cd1)
 
-## Print the rows reaching a certain threshold.
-  wip <- na.omit(wip[d1 > 4/nrow(wip), ])
+ggplot(wip1, aes(x = log(Clicks), y = log(Converted.clicks))) + geom_point(aes(colour = md1, size = cd1)) + geom_text(aes(label = ifelse((cd1 > 4/nrow(wip1)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for Campaign 01", sep = "")) + scale_size(range = c(2, 5))
 
-plot <- ggplot(wip, aes(x = Clicks, y = Converted.clicks)) + geom_point() + geom_text(aes(label = ifelse((d1 > 4/nrow(wip)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for ",i," with Cook's Distance", sep = ""))
+kable(head(arrange(wip1, desc(cd1)), digits=2))
+kable(head(arrange(wip1, desc(md1)), digits=2))
 
-print(plot)
+```
 
-print(arrange(wip, desc(d1)))
-  
-}
+## Campaign 02
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+## Calculate overall Mahalonbis Distance for clicks and conversion numbers to identify outlying values.
+sx2 <- cov(fitSet02.dt[Campaign == "Campaign 02" & Clicks > 0,6:7, with = FALSE])
+md2 <- mahalanobis(fitSet02.dt[Campaign == "Campaign 02" & Clicks > 0,6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == "Campaign 02", 6:7, with = FALSE]), sx2)
+
+## Caculate and add Cook's Distance as per the fited model.
+cd2 <- cooks.distance(
+  lm(Converted.clicks ~ Clicks, data = fitSet02.dt[Campaign == "Campaign 02" & Clicks > 0], weight = Cost)
+  )
+wip2 <- cbind(fitSet02.dt[Campaign == "Campaign 02" & Clicks > 0,], md2, cd2)
+
+ggplot(wip2, aes(x = log(Clicks), y = log(Converted.clicks))) + geom_point(aes(colour = md2, size = cd2)) + geom_text(aes(label = ifelse((cd2 > 4/nrow(wip2)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for Campaign 02", sep = "")) + scale_size(range = c(2, 5))
+
+kable(head(arrange(wip2, desc(cd2)), digits=2))
+kable(head(arrange(wip2, desc(md2)), digits=2))
+
+```
+
+## Campaign 03
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+## Calculate overall Mahalonbis Distance for clicks and conversion numbers to identify outlying values.
+sx3 <- cov(fitSet02.dt[Campaign == "Campaign 03" & Clicks > 0,6:7, with = FALSE])
+md3 <- mahalanobis(fitSet02.dt[Campaign == "Campaign 03" & Clicks > 0,6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == "Campaign 03", 6:7, with = FALSE]), sx1)
+
+## Caculate and add Cook's Distance as per the fited model.
+cd3 <- cooks.distance(
+  lm(Converted.clicks ~ Clicks, data = fitSet02.dt[Campaign == "Campaign 03" & Clicks > 0], weight = Cost)
+  )
+wip3 <- cbind(fitSet02.dt[Campaign == "Campaign 03" & Clicks > 0,], md3, cd3)
+
+ggplot(wip3, aes(x = log(Clicks), y = log(Converted.clicks))) + geom_point(aes(colour = md3, size = cd3)) + geom_text(aes(label = ifelse((cd3 > 4/nrow(wip3)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for Campaign 03", sep = "")) + scale_size(range = c(2, 5))
+
+kable(head(arrange(wip3, desc(cd3)), digits=2))
+kable(head(arrange(wip3, desc(md3)), digits=2))
+
+```
+
+## Campaign 04
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+## Calculate overall Mahalonbis Distance for clicks and conversion numbers to identify outlying values.
+sx4 <- cov(fitSet02.dt[Campaign == "Campaign 04" & Clicks > 0,6:7, with = FALSE])
+md4 <- mahalanobis(fitSet02.dt[Campaign == "Campaign 04",6:7, with = FALSE], colMeans(fitSet02.dt[Campaign == "Campaign 04" & Clicks > 0, 6:7, with = FALSE]), sx1)
+
+## Caculate and add Cook's Distance as per the fited model.
+cd4 <- cooks.distance(
+  lm(Converted.clicks ~ Clicks, data = fitSet02.dt[Campaign == "Campaign 04" & Clicks > 0], weight = Cost)
+  )
+wip4 <- cbind(fitSet02.dt[Campaign == "Campaign 04" & Clicks > 0,], md4, cd4)
+
+ggplot(wip4, aes(x = log(Clicks), y = log(Converted.clicks))) + geom_point(aes(colour = md4, size = cd4)) + geom_text(aes(label = ifelse((cd4 > 4/nrow(wip4)), ngram, "")), hjust = 1, vjust = 1) + ggtitle(paste("Clicks to Converted Clicks for Campaign 04", sep = "")) + scale_size(range = c(2, 5))
+
+kable(head(arrange(wip4, desc(cd4)), digits=2))
+kable(head(arrange(wip4, desc(md4)), digits=2))
 
 ```
